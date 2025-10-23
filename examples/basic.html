@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Basic Example</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background: #1890ff;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #40a9ff;
+    }
+
+    button:active {
+      background: #096dd9;
+    }
+
+    button.secondary {
+      background: #52c41a;
+    }
+
+    button.secondary:hover {
+      background: #73d13d;
+    }
+
+    #timeline {
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .info {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f0f5ff;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>@ldesign/timeline 基础示例</h1>
+    <p>一个功能强大的时间轴组件，支持水平/垂直布局、Canvas/SVG渲染、缩放、平移等功能。</p>
+
+    <div class="controls">
+      <button onclick="timeline.zoomIn()">放大 (+)</button>
+      <button onclick="timeline.zoomOut()">缩小 (-)</button>
+      <button onclick="timeline.fit()">适应视图</button>
+      <button onclick="addRandomEvent()" class="secondary">添加事件</button>
+      <button onclick="timeline.download('timeline.png', 'png')" class="secondary">导出 PNG</button>
+      <button onclick="toggleOrientation()">切换方向</button>
+    </div>
+
+    <div id="timeline"></div>
+
+    <div class="info">
+      <strong>操作提示：</strong>
+      <ul style="margin-left: 20px; margin-top: 8px;">
+        <li>使用鼠标滚轮进行缩放</li>
+        <li>点击并拖动进行平移</li>
+        <li>点击按钮添加新事件</li>
+        <li>支持导出为 PNG 图片</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    // 注意：在实际使用中，应该从 npm 包导入
+    // import { createTimeline } from '@ldesign/timeline';
+
+    // 示例数据
+    const events = [
+      {
+        id: '1',
+        title: '项目启动',
+        description: '项目正式启动，团队组建完成',
+        timestamp: new Date('2024-01-15'),
+        color: '#1890ff',
+      },
+      {
+        id: '2',
+        title: '需求评审',
+        description: '完成需求文档评审',
+        timestamp: new Date('2024-02-20'),
+        color: '#52c41a',
+      },
+      {
+        id: '3',
+        title: '设计完成',
+        description: 'UI/UX 设计全部完成',
+        timestamp: new Date('2024-03-10'),
+        color: '#faad14',
+      },
+      {
+        id: '4',
+        title: '开发阶段',
+        description: '进入开发阶段',
+        timestamp: new Date('2024-04-01'),
+        color: '#722ed1',
+      },
+      {
+        id: '5',
+        title: '测试阶段',
+        description: '开始系统测试',
+        timestamp: new Date('2024-05-15'),
+        color: '#eb2f96',
+      },
+      {
+        id: '6',
+        title: 'Beta 发布',
+        description: 'Beta 版本发布',
+        timestamp: new Date('2024-06-20'),
+        color: '#13c2c2',
+      },
+      {
+        id: '7',
+        title: '正式发布',
+        description: 'v1.0.0 正式发布',
+        timestamp: new Date('2024-07-30'),
+        color: '#52c41a',
+      },
+      {
+        id: '8',
+        title: '用户反馈',
+        description: '收集并处理用户反馈',
+        timestamp: new Date('2024-08-15'),
+        color: '#fa8c16',
+      },
+      {
+        id: '9',
+        title: 'v1.1.0',
+        description: '功能优化版本发布',
+        timestamp: new Date('2024-09-10'),
+        color: '#1890ff',
+      },
+      {
+        id: '10',
+        title: 'v2.0.0',
+        description: '重大版本更新',
+        timestamp: new Date('2024-10-23'),
+        color: '#f5222d',
+      },
+    ];
+
+    let currentOrientation = 'horizontal';
+
+    // 创建时间轴实例（实际使用时需要导入库）
+    console.log('Timeline 示例');
+    console.log('在生产环境中，请通过 npm 安装并导入 @ldesign/timeline');
+    console.log('示例配置：', {
+      events,
+      orientation: currentOrientation,
+      renderType: 'canvas',
+      width: 1140,
+      height: 500,
+    });
+
+    // 由于这是示例文件，实际的 timeline 对象需要在安装库后创建
+    // const timeline = createTimeline({
+    //   container: document.getElementById('timeline'),
+    //   events: events,
+    //   orientation: currentOrientation,
+    //   renderType: 'canvas',
+    //   width: 1140,
+    //   height: 500,
+    //   zoom: {
+    //     enabled: true,
+    //     min: 0.5,
+    //     max: 5,
+    //   },
+    //   pan: {
+    //     enabled: true,
+    //     inertia: true,
+    //   },
+    // });
+
+    // 模拟 timeline 对象（用于演示）
+    window.timeline = {
+      zoomIn: () => console.log('放大'),
+      zoomOut: () => console.log('缩小'),
+      fit: () => console.log('适应视图'),
+      addEvent: (event) => console.log('添加事件:', event),
+      download: (name, format) => console.log(`导出为 ${format}:`, name),
+      update: (config) => console.log('更新配置:', config),
+    };
+
+    // 添加随机事件
+    window.addRandomEvent = function () {
+      const randomDate = new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+      const colors = ['#1890ff', '#52c41a', '#faad14', '#f5222d', '#722ed1', '#eb2f96'];
+      const newEvent = {
+        id: Date.now().toString(),
+        title: `新事件 ${Math.floor(Math.random() * 100)}`,
+        description: '这是一个随机生成的事件',
+        timestamp: randomDate,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      };
+
+      timeline.addEvent(newEvent);
+      console.log('已添加新事件:', newEvent);
+    };
+
+    // 切换方向
+    window.toggleOrientation = function () {
+      currentOrientation = currentOrientation === 'horizontal' ? 'vertical' : 'horizontal';
+      timeline.update({ orientation: currentOrientation });
+      console.log('切换方向为:', currentOrientation);
+    };
+
+    // 显示提示信息
+    const timelineEl = document.getElementById('timeline');
+    timelineEl.innerHTML = `
+      <div style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 500px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-align: center;
+        padding: 40px;
+      ">
+        <div>
+          <h2 style="font-size: 32px; margin-bottom: 20px;">🎉 Timeline 组件示例</h2>
+          <p style="font-size: 18px; margin-bottom: 30px; opacity: 0.9;">
+            要查看完整效果，请安装 @ldesign/timeline 包
+          </p>
+          <div style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 20px; backdrop-filter: blur(10px);">
+            <pre style="text-align: left; margin: 0;">
+npm install @ldesign/timeline
+# or
+yarn add @ldesign/timeline
+            </pre>
+          </div>
+          <p style="margin-top: 20px; font-size: 14px; opacity: 0.8;">
+            已生成 ${events.length} 个示例事件数据
+          </p>
+        </div>
+      </div>
+    `;
+  </script>
+</body>
+
+</html>

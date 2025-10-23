@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Vite Demo - @ldesign/timeline</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="container">
+        <h1>⏱️ @ldesign/timeline</h1>
+        <p class="subtitle">强大的时间轴组件 - Canvas/SVG 双渲染 | Vue/React 支持</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- 控制面板 -->
+      <div class="control-panel">
+        <div class="control-group">
+          <h3>📐 布局控制</h3>
+          <div class="button-group">
+            <button id="toggleOrientation" class="btn">切换方向</button>
+            <button id="toggleRenderer" class="btn">切换渲染器</button>
+            <button id="fit" class="btn">适应视图</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>🔍 缩放控制</h3>
+          <div class="button-group">
+            <button id="zoomIn" class="btn btn-primary">放大 (+)</button>
+            <button id="zoomOut" class="btn btn-primary">缩小 (-)</button>
+            <button id="resetZoom" class="btn">重置缩放</button>
+          </div>
+          <div class="zoom-info">
+            当前缩放: <span id="zoomLevel">1.0x</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>📝 事件管理</h3>
+          <div class="button-group">
+            <button id="addEvent" class="btn btn-success">添加随机事件</button>
+            <button id="removeLastEvent" class="btn btn-danger">删除最后事件</button>
+            <button id="clearEvents" class="btn btn-danger">清空所有事件</button>
+          </div>
+          <div class="event-info">
+            事件数量: <span id="eventCount">0</span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>💾 导出功能</h3>
+          <div class="button-group">
+            <button id="exportPNG" class="btn btn-secondary">导出 PNG</button>
+            <button id="exportSVG" class="btn btn-secondary">导出 SVG</button>
+            <button id="exportJSON" class="btn btn-secondary">导出 JSON</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>🎨 样式控制</h3>
+          <div class="style-controls">
+            <label>
+              节点大小:
+              <input type="range" id="nodeSize" min="6" max="24" value="12" step="1">
+              <span id="nodeSizeValue">12</span>px
+            </label>
+            <label>
+              线条宽度:
+              <input type="range" id="lineWidth" min="1" max="6" value="2" step="0.5">
+              <span id="lineWidthValue">2</span>px
+            </label>
+            <label>
+              节点颜色:
+              <input type="color" id="nodeColor" value="#1890ff">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 时间轴容器 -->
+      <div class="timeline-wrapper">
+        <div id="timeline" class="timeline-container"></div>
+      </div>
+
+      <!-- 统计信息 -->
+      <div class="stats-panel">
+        <div class="stat-item">
+          <span class="stat-label">渲染器:</span>
+          <span id="rendererType" class="stat-value">Canvas</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">方向:</span>
+          <span id="orientationType" class="stat-value">水平</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">时间范围:</span>
+          <span id="timeRange" class="stat-value">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">性能:</span>
+          <span id="performance" class="stat-value">-</span>
+        </div>
+      </div>
+
+      <!-- 操作提示 -->
+      <div class="tips">
+        <h3>💡 操作提示</h3>
+        <ul>
+          <li>🖱️ <strong>鼠标滚轮</strong>: 缩放时间轴</li>
+          <li>👆 <strong>拖拽</strong>: 平移视图（暂未启用鼠标平移，可通过按钮控制）</li>
+          <li>🎯 <strong>点击节点</strong>: 查看事件详情</li>
+          <li>⌨️ <strong>快捷键</strong>: + 放大, - 缩小, 0 重置</li>
+          <li>📱 <strong>触摸</strong>: 支持捏合缩放和拖拽平移</li>
+        </ul>
+      </div>
+
+      <!-- 事件列表 -->
+      <div class="events-list">
+        <h3>📋 事件列表</h3>
+        <div id="eventsList" class="events-container">
+          <!-- 动态生成 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

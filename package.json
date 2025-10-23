@@ -1,20 +1,63 @@
 {
   "name": "@ldesign/timeline",
   "version": "0.1.0",
-  "description": "时间轴组件 - 垂直/水平布局、动画效果",
-  "keywords": ["ldesign", "timeline", "history"],
+  "description": "时间轴组件 - 垂直/水平布局、动画效果、Canvas/SVG双渲染、Vue/React适配器",
+  "keywords": ["ldesign", "timeline", "history", "events", "canvas", "svg", "vue", "react"],
   "author": "LDesign Team",
   "license": "MIT",
   "type": "module",
   "main": "./lib/index.cjs",
   "module": "./es/index.js",
-  "scripts": {"build": "ldesign-builder build -f esm,cjs,dts"},
-  "dependencies": {"@ldesign/shared": "workspace:*"},
-  "devDependencies": {"@ldesign/builder": "workspace:*", "typescript": "^5.7.3"}
+  "types": "./es/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./es/index.js",
+      "require": "./lib/index.cjs",
+      "types": "./es/index.d.ts"
+    },
+    "./vue": {
+      "import": "./es/adapters/vue/index.js",
+      "types": "./es/adapters/vue/index.d.ts"
+    },
+    "./react": {
+      "import": "./es/adapters/react/index.js",
+      "types": "./es/adapters/react/index.d.ts"
+    }
+  },
+  "files": [
+    "es",
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "ldesign-builder build -f esm,cjs,dts"
+  },
+  "dependencies": {
+    "@ldesign/shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0",
+    "react": ">=16.8.0",
+    "three": ">=0.150.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "three": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@ldesign/builder": "workspace:*",
+    "@types/react": "^18.0.0",
+    "@types/three": "^0.150.0",
+    "typescript": "^5.7.3",
+    "vue": "^3.0.0",
+    "react": "^18.0.0"
+  }
 }
-
-
-
-
-
-
